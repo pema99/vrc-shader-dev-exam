@@ -1,0 +1,279 @@
+\documentclass{exam}
+\usepackage{minted}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+\setlength\parindent{0pt}
+
+\title{VRC Shader Dev Entrance Exam}
+\date{May 2022}
+\begin{document}
+
+\maketitle
+
+\section*{Exam structure}
+Welcome to the Shader Dev discord server. This entry exam is designed to not only test your knowledge in the topic of shaders, but also in the meme culture within in the discord server. The exam consists of 3 sections, one containing multiple choice questions, one containing open-ended questions, and finally a section where you will implement your own shader. The grade weightings for each section are given in the section titles. You are not at all expected to answer every question, just get as much correct as you can.\\
+
+Note: Don't take any of this serious, we are just shitposting and having fun. If you can't answer anything, don't feel bad - there may not even be a \texttt{real} answer. A good chunk of the questions do actually have serious answers, though.
+
+\section*{Part 1 - Multiple choice (25\%)}
+This section consists of multiple choice questions. Each question has only 1 correct answer, although you may still receive partial points for an incorrect answer, provided that the answer you have selected is sufficiently close to the correct one. If you are completely lost on a specific question, feel free to supply with explanations of your thought process in textual form.
+
+\begin{questions}
+\question What does the \texttt{smoothstep} constant function evaluate to?
+\begin{checkboxes}
+ \choice \texttt{smoothstep} is not constant
+ \choice 15
+ \choice 0.21582022
+ \choice 0.65
+\end{checkboxes}
+
+\question What does \texttt{asfloat(-1)} evaluate to?
+\begin{checkboxes}
+ \choice 0
+ \choice -1
+ \choice NaN
+ \choice Infinity
+\end{checkboxes}
+
+\question What color does the default error shader, which is used in place of shaders that fail to compile, produce?
+\begin{checkboxes}
+ \choice rgb(1, 0, 1)
+ \choice rgb(0, 0, 1)
+ \choice rgb(1, 1, 1)
+ \choice No color. The renderer becomes invisible
+\end{checkboxes}
+
+\question You have sampled a gray texture and instead of the expected value of $0.5$, you get back $0.21404114048$. What is the cause?
+\begin{checkboxes}
+ \choice Uninitialized memory
+ \choice Mipmaps
+ \choice Color space
+ \choice Texture compression / encoding
+\end{checkboxes}
+
+%\question How many triangles can you generate from just two indices?
+
+\question Which of the following can \textbf{not} be used to persist data in a shader between frames?
+\begin{checkboxes}
+ \choice GrabPass
+ \choice Custom Render Texture
+ \choice Inline Sampler States
+ \choice Camera component
+\end{checkboxes}
+
+\question What is the maximum size in bytes of a constant buffer.
+\begin{checkboxes}
+ \choice 65536
+ \choice 16384
+ \choice 2048
+ \choice Unlimited
+\end{checkboxes}
+
+\question How are booleans stored in common desktop GPU registers?
+\begin{checkboxes}
+ \choice 32bit signed int, -1 for true & 0 for false
+ \choice 32bit signed int, 1 for true & -1 for false
+ \choice Special 32bit field registers pack 32 booleans each
+ \choice 32bit float, 1.0 for true & 0.0 for false
+\end{checkboxes}
+
+\question Where does light come from?
+\begin{checkboxes}
+ \choice From above
+ \choice It is directionless
+ \choice From below
+ \choice From within
+\end{checkboxes}
+
+\question You have written some code using matrices, and it's not working. What should the first step in the debugging process be?
+\begin{checkboxes}
+ \choice Attach RenderDoc and inspect the values
+ \choice Transpose matrices until it works
+ \choice Implement a simplified version in C\#
+ \choice Return a color onto the screen so you can get an idea of the values
+\end{checkboxes}
+
+\question What is the term for when a Shader is rendered on top of another?
+\begin{checkboxes}
+ \choice Render over
+ \choice Overrender
+ \choice Overdraw
+ \choice Topclipping
+\end{checkboxes}
+
+\question Which of the following is \textbf{not} a role in the Shader Dev discord?
+\begin{checkboxes}
+ \choice Lazy
+ \choice Codelet
+ \choice Shadur Queen
+ \choice Expert
+\end{checkboxes}
+
+\question Which of these shader types is run the \textit{earliest}?
+\begin{checkboxes}
+ \choice Fragment shader
+ \choice Vertex shader
+ \choice Geometry shader
+ \choice Tessellation shader
+\end{checkboxes}
+
+\question Where did the conventionally named \texttt{scannerCol} variable come from?
+\begin{checkboxes}
+ \choice Shadertoy
+ \choice Inigo Quilez's website
+ \choice bgolus forum thread
+ \choice A tutorial from Making Stuff Look Good In Unity
+\end{checkboxes}
+
+\question What is the maximum possible dimension of a vector type in HLSL?
+\begin{checkboxes}
+ \choice 3
+ \choice 4
+ \choice 8
+ \choice There is no maximum.
+\end{checkboxes}
+
+\question Consider the program snippet below.
+
+\begin{minted}{glsl}
+float4 frag() : SV_Target { return -1; }
+\end{minted}
+
+If the user loads into a world using this shader with no reference camera set, renders the above fragment program fullscreen, and it is captured with \texttt{GrabPass\{"\_GrabTex"\}}, what value would be returned from the following function:
+
+\begin{minted}{glsl}
+Texture2D<uint4> _GrabTex;
+float4 sample() {
+    return _GrabTex.Load(0);
+}
+\end{minted}
+
+\begin{checkboxes}
+ \choice 0
+ \choice 1
+ \choice 1046162816
+ \choice 3212836864
+\end{checkboxes}
+
+\question Now, assuming the setup from the previous question is rendered on a HDR render target and captured with GrabPass{}, what value would be returned from \texttt{sample()} function.
+
+\begin{checkboxes}
+ \choice 0
+ \choice 1
+ \choice 1046162816
+ \choice 3212836864
+\end{checkboxes}
+
+\question Which of the following is not a practiced use of shaders?
+\begin{checkboxes}
+\choice Simulated sexual intercourse
+\choice Forcibly crashing a GPU
+\choice Text recognition and translation
+\choice All of the above are practiced uses of shaders
+\end{checkboxes}
+
+\end{questions}
+
+\newpage\section*{Part 2 - Open ended questions (35\%)}
+This section contains open ended questions. Each of these questions demand a textual answer, and can have multiple correct answers. For full points, don't just provide a correct answer, but also argue how you arrived to it. If you use any external sources, make sure to write them down.
+\begin{questions}
+\question Imagine you want to maintain some state accross multiple frames using \textit{only} shaders. Explain in a step-by-step fashion how you would achieve this.
+\vspace{100pt}
+
+\question What is understood by the term "Shader locking"?
+\vspace{100pt}
+
+\question What is the difference between a \texttt{sampler2D} and \texttt{Texture2D}?
+\vspace{100pt}
+
+\question You are given the code snippet \texttt{tex2Dproj(\_MainTex, i.projCoords.xyzw)}. \\How would you rewrite this snippet such that the behavior is the same, but you only use \texttt{tex2D} instead of \texttt{tex2Dproj}?
+\vspace{100pt}
+
+\question Which of the following keywords are valid keywords in HLSL? (There are multiple correct answers)
+\begin{itemize}
+    \item volatile
+    \item interface
+    \item packed
+    \item string
+    \item char
+    \item bool2
+    \item globallycoherent
+\end{itemize}
+\vspace{100pt}
+
+\question In your own words, what is the difference between Raymarching and Raytracing in the context of shaders?
+\vspace{100pt}
+
+\question What does the following snippet evaluate to?
+\begin{minted}{glsl}
+float4 hmm = float4(0.4, 0.6, 0.1, 1.0);
+return hmm.zxyw.wxzy.yxzw.zyxw.wxyz.zxwy.garb.gbar.zyxw.yxzw.ywzx;
+\end{minted}
+\vspace{100pt}
+
+\question How would you determine within a fragment shader if the triangle being shaded is front-facing or not?
+\vspace{100pt}
+
+\question How would you render a model that normally has smooth normals to instead be flat shaded?
+\vspace{100pt}
+
+\question How would you get the world position of opaque objects rendered with shaders outside of your control, from within your own shader?
+\vspace{100pt}
+
+\question Guys pls why shader pink???
+\vspace{100pt}
+
+\question Write a function to calculate the signed distance from a point \texttt{float3 p} to a sphere with radius \texttt{r}.
+\vspace{100pt}
+
+\question Who is bgolus? What has he contributed to your work?
+\vspace{100pt}
+
+\question Point out one mistake in the default include \texttt{UnityCG.cginc} and describe how you would fix it.
+\vspace{100pt}
+
+\question Describe briefly how you would write a screenspace effect that rotates the screen.
+\vspace{100pt}
+
+\question Identify and correct the bug in the loop of this raymarching function.
+\begin{minted}{glsl}
+float march(float3 ro, float3 rd) {
+    float t = 0;
+    float3 p = ro;
+    for (uint i = 0; i < _Iterations; i++) {
+        p += ro + rd * t;
+        float dist = map(p);
+        if (t > _MaxDist || dist < _MinDist) break;
+        t += dist;
+    }
+    return t;
+}
+\end{minted}
+
+\question What is the difference between a codelet and a graphlet? Is one objectively more intelligent than the other?
+\vspace{100pt}
+
+\question Describe how lights with a color set to black can be useful. Also, for extra credits, describe how lights producing NaN values can be useful.
+\vspace{100pt}
+
+\question Write a snippet of code which samples a \texttt{tex} field declared as \texttt{Texture2D<float4> tex;} at lod level 3, using the uv coordinates \texttt{uv}, and without directly using \texttt{.Sample} or any member functions like \texttt{.Sample}, \texttt{.SampleLod} or \texttt{.Load}.\\ \textit{Hint: It might be worth looking at MSDN pages for Texture2D operators for this one.}
+\vspace{100pt}
+
+\end{questions}
+\newpage\section*{Part 3 - Free form implementation (40\%)}
+For this section, you are tasked with implementing a shader of your own choosing. It should reasonably demonstrate your knowledge of the topic. Raw source code submissions and shaders created with node-based tools such as Amplify are both fine. All sources used in the submission should be credited with comments in the Shader source code. We suggest \textbf{not} using surface shaders, though they are permitted.\\
+
+Below are suggestions meant as inspiration for your own submission:
+\begin{enumerate}
+    \item Small toon shader
+    \item Outline shader
+    \item Panosphere shader
+    \item Raytracer
+    \item Raymarcher
+    \item Geometry shader cloning
+    \item GPU particles
+    \item Literally any HDRP shader
+    \item A neat compute shader
+\end{enumerate}
+
+\end{document}
