@@ -1,6 +1,9 @@
 # vrc-shader-dev-exam
 Official VRC shader dev entrance exam. (Not really though)
 
+# what the heck is this?
+If you fill out even part of the exam and send me your answer, I will gladly elaborate. Reach me on discord at Pema99#9042
+
 # cursed be ye who visit these lands
 @poiyomi I'm not sorry...
 
